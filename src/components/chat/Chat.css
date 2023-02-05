@@ -1,0 +1,12 @@
+.Chat__container {
+    width: 60%;
+    height: 85%;
+    padding: 10px;
+    background-color: #ebebeb;
+    box-shadow: 1px 1px 8px black;
+    overflow-y: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+}
+

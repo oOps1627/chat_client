@@ -1,0 +1,8 @@
+.OnlineList__container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    background-color: #2d2d2d;
+    box-shadow: 1px 1px 8px black;
+}
