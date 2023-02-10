@@ -7,15 +7,31 @@ import AllRooms from "./components/all-rooms/AllRooms";
 import MyRooms from "./components/my-rooms/MyRooms";
 import { AuthProviderContext, IAuthProvider } from "./providers/AuthProvider";
 import { Loader } from "./components/loader/Loader";
+import { IRealtimeProvider, RealtimeProviderContext } from "./providers/RealtimeProvider";
 
 function App(): JSX.Element {
     const [initialized, setInitialized] = useState(false);
     const authProvider: IAuthProvider = useContext(AuthProviderContext);
+    const realtimeProvider: IRealtimeProvider = useContext(RealtimeProviderContext);
 
     useEffect(() => {
-        authProvider.initialize().then(() => {
-            setInitialized(true);
+        const unsubscribe = authProvider.subscribeOnAuthorizationChange((isAuthorized) => {
+
+            if (isAuthorized && !realtimeProvider.isConnected) {
+                realtimeProvider.connect();
+                return;
+            }
+
+            if (!isAuthorized && realtimeProvider.isConnected) {
+                realtimeProvider.disconnect();
+            }
         });
+
+        authProvider.initialize()
+            .then(() => setInitialized(true))
+            .catch(() => setInitialized(true))
+
+        return unsubscribe;
     }, [])
 
     return (

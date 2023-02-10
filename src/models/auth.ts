@@ -3,5 +3,5 @@ export interface ILoginParams {
     password: string;
 }
 
-export interface IRegisterParams extends ILoginParams {
+export interface IRegistrationParams extends ILoginParams {
 }

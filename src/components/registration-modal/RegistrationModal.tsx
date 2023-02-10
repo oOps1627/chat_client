@@ -1,7 +1,6 @@
-import './LoginModal.css';
 import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } from "react";
-import { AuthProviderContext, IAuthProvider } from "../../providers/AuthProvider";
-import { ILoginParams } from "../../models/auth";
+import { AuthProviderContext } from "../../providers/AuthProvider";
+import { ILoginParams, IRegistrationParams } from "../../models/auth";
 
 interface IProps {
     show: boolean;
@@ -13,10 +12,10 @@ interface IActionResult {
     success: boolean;
 }
 
-function LoginModal(props: IProps): ReactElement {
-    const authProvider: IAuthProvider = useContext(AuthProviderContext);
+export function RegistrationModal(props: IProps): ReactElement {
+    const authProvider = useContext(AuthProviderContext);
 
-    const [formData, setFormData] = useState<ILoginParams>({
+    const [formData, setFormData] = useState<IRegistrationParams>({
         username: '',
         password: ''
     });
@@ -29,13 +28,10 @@ function LoginModal(props: IProps): ReactElement {
 
     const handleSubmit: FormEventHandler = (event) => {
         event.preventDefault();
-        authProvider.login(formData)
+        authProvider.register(formData)
             .then(() => {
-                setActionResult({success: true, text: 'You successfully login'});
-                setTimeout(() => {
-                    props.close();
-                    setActionResult(null);
-                }, 1000);
+                setActionResult({success: true, text: 'You successfully registered'});
+                setTimeout(() => props.close(), 1000);
             })
             .catch((error: Response) => {
                 setActionResult({success: false, text: error.statusText});
@@ -58,7 +54,7 @@ function LoginModal(props: IProps): ReactElement {
                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleChange({password: event.target.value})}
                 />
 
-                <input type="submit" value="Sign-in"/>
+                <input type="submit" value="Sign-up"/>
 
                 <div className={`status-message ${actionResult?.success ? 'success' : 'error'}`}
                      hidden={!actionResult}>{actionResult?.text}
@@ -67,5 +63,3 @@ function LoginModal(props: IProps): ReactElement {
         </div>
     )
 }
-
-export default LoginModal;

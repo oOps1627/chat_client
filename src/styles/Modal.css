@@ -1,0 +1,28 @@
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: auto;
+    display: none;
+    z-index: 1000;
+    max-width: 450px;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 20px;
+    background-color: #1b1b1b;
+    color: #68a437;
+}
+
+.modal.opened {
+    display: block;
+}
+
+.status-message {
+    font-size: 13px;
+}
+
+.status-message.error {
+    color: red;
+}

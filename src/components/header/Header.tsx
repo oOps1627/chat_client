@@ -2,10 +2,12 @@ import './Header.css';
 import { ReactElement, useContext, useState } from "react";
 import { AuthProviderContext, IAuthProvider } from "../../providers/AuthProvider";
 import LoginModal from "../login-modal/LoginModal";
+import { RegistrationModal } from "../registration-modal/RegistrationModal";
 
 function Header(): ReactElement {
     const authProvider: IAuthProvider = useContext(AuthProviderContext);
     const isAuthorized = authProvider.isAuthorized();
+
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
@@ -16,29 +18,30 @@ function Header(): ReactElement {
             <div className='Header__navbar-right-side'>
 
                 <span className='Header__greeting' hidden={!isAuthorized}>
-                    Ласкаво просимо, {authProvider.user?.username}
+                    Hello, {authProvider.user?.username}
                 </span>
 
                 <button className="Header__button"
                         hidden={isAuthorized}
                         onClick={() => setShowRegistrationModal(true)}>
-                    Реєстрація
+                    Sign-up
                 </button>
 
                 <button className="Header__button"
                         hidden={isAuthorized}
                         onClick={() => setShowLoginModal(true)}>
-                    Ввійти
+                    Sign-in
                 </button>
 
                 <button className="Header__button"
                         hidden={!isAuthorized}
                         onClick={() => authProvider.logout()}>
-                    Вийти
+                    Logout
                 </button>
             </div>
 
             <LoginModal show={showLoginModal} close={() => setShowLoginModal(false)}/>
+            <RegistrationModal show={showRegistrationModal} close={() => setShowRegistrationModal(false)}/>
         </nav>
     )
 }
