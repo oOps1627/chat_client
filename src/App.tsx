@@ -48,7 +48,7 @@ function App(): JSX.Element {
                 </div>
             </AuthProviderContext.Provider>
 
-            ${!initialized && <Loader/>}
+            {!initialized && <Loader/>}
         </div>
     );
 }

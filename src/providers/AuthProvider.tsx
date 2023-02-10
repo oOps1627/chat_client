@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
+import { createContext, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { IUser } from "../models/user";
 import { ILoginParams, IRegistrationParams } from "../models/auth";
 import { httpRequest, HTTPRequestMethod } from "../helpers/request";
@@ -13,19 +13,20 @@ export interface IAuthProvider {
 
     initialize(): Promise<void>;
 
-    login(params: ILoginParams): Promise<any>;
+    login(params: ILoginParams): Promise<void>;
 
-    register(params: IRegistrationParams): Promise<any>;
+    register(params: IRegistrationParams): Promise<void>;
 
     logout(): Promise<void>;
 }
 
 export const AuthProviderContext = createContext<PropsWithChildren<IAuthProvider>>(null as any);
 
+const authorizationObservable: Observable<boolean> = new Observable<boolean>();
+
 export function AuthProvider(props: PropsWithChildren): ReactElement {
     const [user, setUser] = useState<IUser | null>(null);
 
-    const authorizationObservable: Observable<boolean> = useMemo(() => new Observable<boolean>(), []);
 
     const isAuthorized = () => !!user;
 
@@ -41,7 +42,7 @@ export function AuthProvider(props: PropsWithChildren): ReactElement {
         })
     }
 
-    const login = (params: ILoginParams): Promise<any> => {
+    const login = (params: ILoginParams): Promise<void> => {
         return httpRequest<IUser>(`${process.env.REACT_APP_API_HOST}/auth/login`, {
             method: HTTPRequestMethod.POST,
             body: params,
@@ -50,12 +51,10 @@ export function AuthProvider(props: PropsWithChildren): ReactElement {
         })
     }
 
-    const register = (params: IRegistrationParams): Promise<any> => {
-        return httpRequest<IUser>(`${process.env.REACT_APP_API_HOST}/auth/register`, {
+    const register = (params: IRegistrationParams): Promise<void> => {
+        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/auth/register`, {
             method: HTTPRequestMethod.POST,
             body: params,
-        }).then((user) => {
-            setUser(user);
         })
     }
 
