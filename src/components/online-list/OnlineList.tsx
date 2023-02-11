@@ -38,7 +38,7 @@ function OnlineList(): ReactElement {
         <div className="OnlineList__container">
             <span className='OnlineList__title'>Online:</span>
             <div hidden={isAuthorized} className='OnlineList__alert'>
-                Please login for have opportunity to view users in online
+                You need to login to have access to view online users
             </div>
             <div hidden={!isAuthorized}>
                 {
