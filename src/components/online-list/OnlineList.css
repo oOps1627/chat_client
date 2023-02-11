@@ -6,12 +6,34 @@
     box-shadow: 1px 1px 8px black;
     text-align: center;
     box-sizing: border-box;
+    color: #68a437;
 }
 
 .OnlineList__title {
     text-align: center;
-    color: #68a437;
     font-size: 17px;
     font-weight: 700;
+    margin-bottom: 15px;
+    display: block;
 }
 
+.OnlineList__alert {
+    color: #c95151;
+}
+
+.OnlineList__user {
+    background-color: inherit;
+    border: none;
+    border-bottom: 1px solid #161616;
+    border-radius: 0;
+    border-top: 1px solid #484848;
+    color: #e3e3e3;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    height: auto;
+    overflow-wrap: break-word;
+    padding: 8px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}

@@ -11,9 +11,9 @@ export enum RealtimeEvent {
 export interface IRealtimeProvider {
     readonly isConnected: boolean;
 
-    subscribeOnEvent<T = unknown>(event: RealtimeEvent, handler: (data?: T) => void): void;
+    subscribeOnEvent<T = unknown>(event: RealtimeEvent, handler: (data: T) => void): void;
 
-    unsubscribeFromEvent(event: RealtimeEvent, handler: (data?: unknown) => void): void;
+    unsubscribeFromEvent<T = unknown>(event: RealtimeEvent, handler: (data: T) => void): void;
 
     emitEvent<T = unknown>(event: RealtimeEvent, data: T): void;
 
@@ -58,7 +58,7 @@ export function RealtimeProvider(props: PropsWithChildren): ReactElement {
         observablesMap[event].subscribe(handler);
     }
 
-    const unsubscribeFromEvent = (event: RealtimeEvent, handler: () => void) => {
+    const unsubscribeFromEvent = (event: RealtimeEvent, handler: (data?: any) => void) => {
         observablesMap[event].unsubscribe(handler);
     }
 
