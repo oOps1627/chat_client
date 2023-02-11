@@ -1,3 +1,5 @@
+import { IHTTPErrorResponse } from "./error-response";
+
 export enum HTTPRequestMethod {
     POST = 'POST',
     GET = 'GET',
@@ -20,7 +22,7 @@ export function httpRequest<ResponseData = unknown>(url: string, options: IHTTPR
             method: options.method,
             headers: {...DefaultHeaders, ...options.headers},
             body: JSON.stringify(options.body),
-        }).then(async (res: Response) => {
+        }).then(async (res: Response | IHTTPErrorResponse) => {
             if (res.ok) {
                 try {
                     const data: ResponseData = res.json && await res.json();
@@ -29,7 +31,10 @@ export function httpRequest<ResponseData = unknown>(url: string, options: IHTTPR
                     resolve(undefined as ResponseData);
                 }
             } else {
-                reject(res);
+                reject({
+                    ...res,
+                    error: await res.json()
+                } as IHTTPErrorResponse);
             }
         })
     });

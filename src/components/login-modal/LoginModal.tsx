@@ -2,6 +2,7 @@ import './LoginModal.css';
 import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } from "react";
 import { AuthProviderContext, IAuthProvider } from "../../providers/AuthProvider";
 import { ILoginParams } from "../../models/auth";
+import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
 
 interface IProps {
     show: boolean;
@@ -37,8 +38,8 @@ function LoginModal(props: IProps): ReactElement {
                     setActionResult(null);
                 }, 1000);
             })
-            .catch((error: Response) => {
-                setActionResult({success: false, text: error.statusText});
+            .catch((error: IHTTPErrorResponse) => {
+                setActionResult({success: false, text: getErrorMessage(error)});
             })
     }
 

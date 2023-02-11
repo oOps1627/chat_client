@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } from "react";
 import { AuthProviderContext } from "../../providers/AuthProvider";
 import { ILoginParams, IRegistrationParams } from "../../models/auth";
+import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
 
 interface IProps {
     show: boolean;
@@ -33,8 +34,8 @@ export function RegistrationModal(props: IProps): ReactElement {
                 setActionResult({success: true, text: 'You successfully registered'});
                 setTimeout(() => props.close(), 1000);
             })
-            .catch((error: Response) => {
-                setActionResult({success: false, text: error.statusText});
+            .catch(async (error: IHTTPErrorResponse) => {
+                setActionResult({success: false, text: getErrorMessage(error)});
             })
     }
 
