@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, ReactElement, useMemo } from "react";
+import { createContext, PropsWithChildren, ReactElement } from "react";
 import { io } from "socket.io-client";
 import { Socket } from "socket.io-client/build/esm/socket";
 import { Observable } from "../helpers/observable";
@@ -6,6 +6,7 @@ import { Observable } from "../helpers/observable";
 export enum RealtimeEvent {
     UserConnected = 'UserConnected',
     UserDisconnected = 'UserDisconnected',
+    NewMessage = 'NewMessage'
 }
 
 export interface IRealtimeProvider {
@@ -27,6 +28,7 @@ export const RealtimeProviderContext = createContext<PropsWithChildren<IRealtime
 const observablesMap: {[key in RealtimeEvent]: Observable} = {
     [RealtimeEvent.UserConnected]: new Observable(),
     [RealtimeEvent.UserDisconnected]: new Observable(),
+    [RealtimeEvent.NewMessage]: new Observable(),
 }
 
 export function RealtimeProvider(props: PropsWithChildren): ReactElement {

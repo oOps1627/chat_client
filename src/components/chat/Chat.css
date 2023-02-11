@@ -1,12 +1,18 @@
-.Chat__container {
+.Chat__wrapper {
+    display: flex;
+    flex-direction: column;
     width: 60%;
     height: 85%;
     padding: 10px;
+    position: relative;
+}
+
+.Chat__container {
+    flex-grow: 1;
     background-color: #ebebeb;
     box-shadow: 1px 1px 8px black;
     overflow-y: auto;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    position: relative;
 }
 
