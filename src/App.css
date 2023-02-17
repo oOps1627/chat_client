@@ -22,3 +22,7 @@ html, body, #root {
   flex-grow: 1;
   margin-left: 20px;
 }
+
+.menu *:not(.menu:last-child) {
+  margin-bottom: 15px;
+}

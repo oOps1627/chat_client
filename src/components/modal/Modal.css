@@ -1,3 +1,18 @@
+.modal-overlay {
+    position: fixed;
+    background: #585858;
+    opacity: 0.8;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
 .modal {
     position: absolute;
     top: 50%;
@@ -30,12 +45,4 @@
 
 .modal.opened {
     display: block;
-}
-
-.status-message {
-    font-size: 13px;
-}
-
-.status-message.error {
-    color: #c95151;
 }

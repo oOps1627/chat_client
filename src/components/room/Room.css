@@ -1,0 +1,22 @@
+.room {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    padding: 8px 20px;
+    border: none;
+    border-top: 1px solid #373737;
+    border-bottom: 1px solid #252525;
+    border-radius: 0;
+    background-color: inherit;
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.room.active {
+    background-color: #68a437;
+    border-color: #68a437;
+}

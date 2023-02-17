@@ -11,11 +11,16 @@ export enum HTTPRequestMethod {
 interface IHTTPRequestOptions<Body = unknown> {
     method: HTTPRequestMethod,
     body?: Body,
+    queryParams?: object,
     headers?: object,
 }
 
 export function httpRequest<ResponseData = unknown>(url: string, options: IHTTPRequestOptions): Promise<ResponseData> {
     const DefaultHeaders = {['Content-Type']: 'application/json'};
+
+    if (options.queryParams) {
+        url = url + '?' + new URLSearchParams(options.queryParams as Record<string, string>);
+    }
 
     return new Promise((resolve, reject) => {
         fetch(url, {

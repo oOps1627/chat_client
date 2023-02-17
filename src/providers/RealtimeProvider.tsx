@@ -1,12 +1,16 @@
-import { createContext, PropsWithChildren, ReactElement } from "react";
+import { createContext, PropsWithChildren, ReactElement, useState } from "react";
 import { io } from "socket.io-client";
 import { Socket } from "socket.io-client/build/esm/socket";
 import { Observable } from "../helpers/observable";
 
 export enum RealtimeEvent {
-    UserConnected = 'UserConnected',
-    UserDisconnected = 'UserDisconnected',
-    NewMessage = 'NewMessage'
+    UserConnected = "UserConnected",
+    UserDisconnected = "UserDisconnected",
+    NewMessage = 'NewMessage',
+    RoomCreated = 'RoomCreated',
+    RoomDeleted = 'RoomDeleted',
+    UserJoinedRoom = 'UserJoinedRoom',
+    UserLeaveRoom = 'UserLeaveRoom',
 }
 
 export interface IRealtimeProvider {
@@ -25,22 +29,20 @@ export interface IRealtimeProvider {
 
 export const RealtimeProviderContext = createContext<PropsWithChildren<IRealtimeProvider>>(null as any);
 
-const observablesMap: {[key in RealtimeEvent]: Observable} = {
-    [RealtimeEvent.UserConnected]: new Observable(),
-    [RealtimeEvent.UserDisconnected]: new Observable(),
-    [RealtimeEvent.NewMessage]: new Observable(),
-}
+const observablesMap = Object.keys(RealtimeEvent).reduce((acc, event) => {
+    return {...acc, [event]: new Observable()}
+}, {}) as { [key in RealtimeEvent]: Observable }
+
+let socket: Socket;
 
 export function RealtimeProvider(props: PropsWithChildren): ReactElement {
-    let socket: Socket;
-
-    let isConnected = false;
+    const [isConnected, setIsConnected] = useState(false);
 
     const connect = () => {
         if (isConnected)
             return;
 
-        const socket = io({transports:['websocket']});
+        socket = io({transports: ['websocket']});
 
         Object.keys(observablesMap).forEach((event) => {
             socket.on(event, (data) => {
@@ -48,12 +50,12 @@ export function RealtimeProvider(props: PropsWithChildren): ReactElement {
             });
         });
 
-        isConnected = true;
+        setIsConnected(true);
     }
 
     const disconnect = () => {
         socket.disconnect();
-        isConnected = false;
+        setIsConnected(false);
     }
 
     const subscribeOnEvent = (event: RealtimeEvent, handler: (data?: any) => void) => {

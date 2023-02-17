@@ -3,18 +3,14 @@ import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } fro
 import { AuthProviderContext, IAuthProvider } from "../../providers/AuthProvider";
 import { ILoginParams } from "../../models/auth";
 import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
-
-interface IProps {
-    show: boolean;
-    close: () => void;
-}
+import { IModalProps, Modal } from "../modal/Modal";
 
 interface IActionResult {
     text: string;
     success: boolean;
 }
 
-function LoginModal(props: IProps): ReactElement {
+function LoginModal(props: IModalProps): ReactElement {
     const authProvider: IAuthProvider = useContext(AuthProviderContext);
 
     const [formData, setFormData] = useState<ILoginParams>({
@@ -44,9 +40,7 @@ function LoginModal(props: IProps): ReactElement {
     }
 
     return (
-        <div className={`modal ${props.show  ? 'opened' : ''}`}>
-            <button className='close' onClick={props.close}>X</button>
-
+        <Modal show={props.show} close={props.close}>
             <form onSubmit={handleSubmit}>
                 <input type="text"
                        placeholder="Username"
@@ -65,7 +59,7 @@ function LoginModal(props: IProps): ReactElement {
                      hidden={!actionResult}>{actionResult?.text}
                 </div>
             </form>
-        </div>
+        </Modal>
     )
 }
 

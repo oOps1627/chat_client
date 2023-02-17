@@ -1,22 +1,23 @@
 import './TextInput.css';
-import { ChangeEvent, ReactElement, useContext, useState } from "react";
-import { IRealtimeProvider, RealtimeEvent, RealtimeProviderContext } from "../../providers/RealtimeProvider";
-import { ISentMessage } from "../../models/message";
+import { ChangeEvent, FormEvent, ReactElement, useContext, useState } from "react";
+import { IMessagesProvider, MessagesProviderContext } from "../../providers/MessagesProvider";
+import { IRoomsProvider, RoomsProviderContext } from "../../providers/RoomsProvider";
 
 export function TextInput(): ReactElement {
-    const realtimeProvider: IRealtimeProvider = useContext(RealtimeProviderContext);
+    const messagesProvider: IMessagesProvider = useContext(MessagesProviderContext);
+    const roomsProvider: IRoomsProvider = useContext(RoomsProviderContext);
 
     const [text, setText] = useState<string>('');
 
-    const handleSubmit = () => {
-        realtimeProvider.emitEvent<ISentMessage>(RealtimeEvent.NewMessage, {
-            text: text
-        })
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        messagesProvider.sendMessage({text, roomId: roomsProvider.currentRoom?.id});
+        setText('');
     }
 
     return (
         <>
-            <form className="input-form" onSubmit={handleSubmit}>
+            <form className="input-form" onSubmit={(event) => handleSubmit(event)}>
                 <input type="text"
                        value={text}
                        onChange={(event: ChangeEvent<HTMLInputElement>) => setText(event.target.value)}

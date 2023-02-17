@@ -27,7 +27,6 @@ const authorizationObservable: Observable<boolean> = new Observable<boolean>();
 export function AuthProvider(props: PropsWithChildren): ReactElement {
     const [user, setUser] = useState<IUser | null>(null);
 
-
     const isAuthorized = () => !!user;
 
     const subscribeOnAuthorizationChange = (handler: (isAuthorized: boolean) => void) => {

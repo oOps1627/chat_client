@@ -1,2 +1,9 @@
-@import "../../styles/Modal.css";
 @import "../../styles/Form.css";
+
+.status-message {
+    font-size: 13px;
+}
+
+.status-message.error {
+    color: #c95151;
+}

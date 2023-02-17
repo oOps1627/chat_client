@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "./providers/AuthProvider";
 import { UsersProvider } from "./providers/UsersProvider";
 import { RealtimeProvider } from "./providers/RealtimeProvider";
+import { MessagesProvider } from "./providers/MessagesProvider";
+import { RoomsProvider } from "./providers/RoomsProvider";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,7 +16,11 @@ root.render(
     <RealtimeProvider>
         <UsersProvider>
             <AuthProvider>
-                <App/>
+                <RoomsProvider>
+                    <MessagesProvider>
+                        <App/>
+                    </MessagesProvider>
+                </RoomsProvider>
             </AuthProvider>
         </UsersProvider>
     </RealtimeProvider>

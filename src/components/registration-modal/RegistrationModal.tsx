@@ -2,18 +2,14 @@ import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } fro
 import { AuthProviderContext } from "../../providers/AuthProvider";
 import { ILoginParams, IRegistrationParams } from "../../models/auth";
 import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
-
-interface IProps {
-    show: boolean;
-    close: () => void;
-}
+import { IModalProps, Modal } from "../modal/Modal";
 
 interface IActionResult {
     text: string;
     success: boolean;
 }
 
-export function RegistrationModal(props: IProps): ReactElement {
+export function RegistrationModal(props: IModalProps): ReactElement {
     const authProvider = useContext(AuthProviderContext);
 
     const [formData, setFormData] = useState<IRegistrationParams>({
@@ -40,9 +36,7 @@ export function RegistrationModal(props: IProps): ReactElement {
     }
 
     return (
-        <div className={`modal ${props.show  ? 'opened' : ''}`}>
-            <button className='close' onClick={props.close}>X</button>
-
+        <Modal close={props.close} show={props.show}>
             <form onSubmit={handleSubmit}>
                 <input type="text"
                        placeholder="Username"
@@ -61,6 +55,6 @@ export function RegistrationModal(props: IProps): ReactElement {
                      hidden={!actionResult}>{actionResult?.text}
                 </div>
             </form>
-        </div>
+        </Modal>
     )
 }
