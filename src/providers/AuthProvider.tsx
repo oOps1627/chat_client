@@ -1,8 +1,9 @@
 import { createContext, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { IUser } from "../models/user";
 import { ILoginParams, IRegistrationParams } from "../models/auth";
-import { httpRequest, HTTPRequestMethod } from "../helpers/request";
 import { Observable } from "../helpers/observable";
+import { restApi } from "../http/http";
+import { SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER } from "../interceptors/refresh-token.interceptor";
 
 export interface IAuthProvider {
     readonly user: IUser | null;
@@ -34,34 +35,36 @@ export function AuthProvider(props: PropsWithChildren): ReactElement {
     }
 
     const initialize = () => {
-        return httpRequest<IUser>(`${process.env.REACT_APP_API_HOST}/users/user-info`, {
-            method: HTTPRequestMethod.GET,
-        }).then((user) => {
+        return restApi.get<IUser>(`${process.env.REACT_APP_API_HOST}/users/user-info`).then((user) => {
             setUser(user);
         })
     }
 
     const login = (params: ILoginParams): Promise<void> => {
-        return httpRequest<IUser>(`${process.env.REACT_APP_API_HOST}/auth/login`, {
-            method: HTTPRequestMethod.POST,
+        return restApi.post<IUser>(`${process.env.REACT_APP_API_HOST}/auth/login`, {
             body: params,
+            headers: {[SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER]: 'true'}
         }).then((user) => {
             setUser(user);
         })
     }
 
     const register = (params: IRegistrationParams): Promise<void> => {
-        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/auth/register`, {
-            method: HTTPRequestMethod.POST,
+        return restApi.post<void>(`${process.env.REACT_APP_API_HOST}/auth/register`, {
             body: params,
+            headers: {[SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER]: 'true'}
         })
     }
 
     const logout = (): Promise<any> => {
-        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/auth/logout`, {
-            method: HTTPRequestMethod.DELETE,
-        }).then(() => {
+        return restApi.delete<void>(`${process.env.REACT_APP_API_HOST}/auth/logout`).then(() => {
             setUser(null);
+        })
+    }
+
+    const refreshToken = (): Promise<any> => {
+        return restApi.post<void>(`${process.env.REACT_APP_API_HOST}/auth/refresh`, {
+            headers: {[SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER]: 'true'}
         })
     }
 

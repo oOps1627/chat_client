@@ -1,7 +1,7 @@
 import './CreateRoomModal.css';
 import { IModalProps, Modal } from "../modal/Modal";
 import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } from "react";
-import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
+import { getErrorMessage, IHttpErrorResponse } from "../../http/error-response";
 import { ICreateRoomParams, IRoom } from "../../models/room";
 import { IRoomsProvider, RoomsProviderContext } from "../../providers/RoomsProvider";
 
@@ -25,7 +25,7 @@ export function CreateRoomModal(props: IModalProps): ReactElement {
                 setFormData(initialFormState);
                 props.close();
             })
-            .catch((error: IHTTPErrorResponse) => {
+            .catch((error: IHttpErrorResponse) => {
                 console.error(getErrorMessage(error));
             })
     }

@@ -1,6 +1,6 @@
 import { IUser } from "../models/user";
 import { createContext, PropsWithChildren, ReactElement } from "react";
-import { httpRequest, HTTPRequestMethod } from "../helpers/request";
+import { restApi } from "../http/http";
 
 export interface IUsersProvider {
     getOnlineUsers(): Promise<IUser[]>;
@@ -10,9 +10,7 @@ export const UsersProviderContext = createContext<PropsWithChildren<IUsersProvid
 
 export function UsersProvider(props: PropsWithChildren): ReactElement {
     const getOnlineUsers = () => {
-        return httpRequest<IUser[]>(`${process.env.REACT_APP_API_HOST}/users/online`, {
-            method: HTTPRequestMethod.GET
-        });
+        return restApi.get<IUser[]>(`${process.env.REACT_APP_API_HOST}/users/online`);
     }
 
     return (

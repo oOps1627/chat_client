@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEventHandler, ReactElement, useContext, useState } from "react";
 import { AuthProviderContext } from "../../providers/AuthProvider";
 import { ILoginParams, IRegistrationParams } from "../../models/auth";
-import { getErrorMessage, IHTTPErrorResponse } from "../../helpers/error-response";
+import { getErrorMessage, IHttpErrorResponse } from "../../http/error-response";
 import { IModalProps, Modal } from "../modal/Modal";
 
 interface IActionResult {
@@ -30,7 +30,7 @@ export function RegistrationModal(props: IModalProps): ReactElement {
                 setActionResult({success: true, text: 'You successfully registered'});
                 setTimeout(() => props.close(), 1000);
             })
-            .catch(async (error: IHTTPErrorResponse) => {
+            .catch(async (error: IHttpErrorResponse) => {
                 setActionResult({success: false, text: getErrorMessage(error)});
             })
     }

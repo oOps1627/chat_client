@@ -8,6 +8,10 @@ import { UsersProvider } from "./providers/UsersProvider";
 import { RealtimeProvider } from "./providers/RealtimeProvider";
 import { MessagesProvider } from "./providers/MessagesProvider";
 import { RoomsProvider } from "./providers/RoomsProvider";
+import { restApi } from "./http/http";
+import { RefreshTokenInterceptor } from "./interceptors/refresh-token.interceptor";
+
+restApi.useMiddleware(new RefreshTokenInterceptor());
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

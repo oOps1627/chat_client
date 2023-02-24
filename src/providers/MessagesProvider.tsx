@@ -2,7 +2,7 @@ import { Observable } from "../helpers/observable";
 import { IReceivedMessage, ISentMessage } from "../models/message";
 import { createContext, PropsWithChildren, ReactElement, useContext, useEffect, useState } from "react";
 import { IRealtimeProvider, RealtimeEvent, RealtimeProviderContext } from "./RealtimeProvider";
-import { httpRequest, HTTPRequestMethod } from "../helpers/request";
+import { restApi } from "../http/http";
 
 export interface IMessagesProvider {
     readonly onNewMessage: Observable<IReceivedMessage>;
@@ -51,8 +51,7 @@ export function MessagesProvider(props: PropsWithChildren): ReactElement {
     }
 
     const loadMessages = (roomId?: string): Promise<IReceivedMessage[]> => {
-        return httpRequest<IReceivedMessage[]>(`${process.env.REACT_APP_API_HOST}/messages`, {
-            method: HTTPRequestMethod.GET,
+        return restApi.get<IReceivedMessage[]>(`${process.env.REACT_APP_API_HOST}/messages`, {
             queryParams: roomId ? {roomId} : undefined
         }).then((messages) => {
             const key = roomId ?? defaultRoomId;

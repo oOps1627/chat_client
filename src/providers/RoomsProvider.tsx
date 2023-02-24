@@ -1,6 +1,6 @@
 import { ICreateRoomParams, IRoom } from "../models/room";
 import { createContext, PropsWithChildren, ReactElement, useState } from "react";
-import { httpRequest, HTTPRequestMethod } from "../helpers/request";
+import { restApi } from "../http/http";
 
 export interface IRoomsProvider {
     readonly currentRoom: IRoom | null;
@@ -26,40 +26,29 @@ export function RoomsProvider(props: PropsWithChildren): ReactElement {
     const [activeRoom, setActiveRoom] = useState<IRoom | null>(null);
 
     const createRoom = (params: ICreateRoomParams) => {
-        return httpRequest<IRoom>(`${process.env.REACT_APP_API_HOST}/rooms`, {
-            method: HTTPRequestMethod.POST,
+        return restApi.post<IRoom>(`${process.env.REACT_APP_API_HOST}/rooms`, {
             body: params
         })
     }
 
     const getAllRooms = () => {
-        return httpRequest<IRoom[]>(`${process.env.REACT_APP_API_HOST}/rooms`, {
-            method: HTTPRequestMethod.GET,
-        })
+        return restApi.get<IRoom[]>(`${process.env.REACT_APP_API_HOST}/rooms`)
     }
 
     const getMyRooms = () => {
-        return httpRequest<IRoom[]>(`${process.env.REACT_APP_API_HOST}/rooms/my`, {
-            method: HTTPRequestMethod.GET,
-        })
+        return restApi.get<IRoom[]>(`${process.env.REACT_APP_API_HOST}/rooms/my`)
     }
 
     const joinRoom = (roomId: string) => {
-        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}/join`, {
-            method: HTTPRequestMethod.PUT,
-        })
+        return restApi.put<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}/join`)
     }
 
     const leaveRoom = (roomId: string) => {
-        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}/leave`, {
-            method: HTTPRequestMethod.PUT,
-        })
+        return restApi.put<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}/leave`)
     }
 
     const deleteRoom = (roomId: string) => {
-        return httpRequest<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}`, {
-            method: HTTPRequestMethod.DELETE,
-        })
+        return restApi.delete<void>(`${process.env.REACT_APP_API_HOST}/rooms/${roomId}`)
     }
 
     const switchCurrentRoom = (room: IRoom | null) => setActiveRoom(room)
