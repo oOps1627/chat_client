@@ -12,19 +12,23 @@ export class RefreshTokenInterceptor implements IHttpInterceptor {
         }
 
         return new Promise<T>((resolve, reject) => {
-            next(request)
+            next(request.clone())
                 .then((res => {
                     resolve(res);
                 }))
                 .catch((error: IHttpErrorResponse) => {
                     if (error.error.statusCode === 401) {
                        this._refreshTokenRequest()
-                            .then(() => {
+                           .then(() => {
                                 const newRequest: Request = request.clone();
                                 newRequest.headers.append(SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER, 'true');
-                                next(newRequest).then(resolve).catch(reject);
+                                next(newRequest).then((res) => {
+                                    resolve(res);
+                                }).catch(reject);
                             })
-                            .catch(() => reject(error));
+                            .catch((reason) => {
+                                reject(error);
+                            });
                     } else {
                         reject(error);
                     }
