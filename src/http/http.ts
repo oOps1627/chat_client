@@ -60,13 +60,20 @@ class Http {
     }
 
     private _createRequest(url: string, options: RequestInit): Request {
-        const defaultHeaders = new Headers({
-            ['Content-Type']: 'application/json'
-        });
+        const headers = new Headers(options.headers ?? {});
+        const DEFAULT_HEADERS: {[key: string]: string} = {
+            'Content-Type': 'application/json'
+        }
+
+        Object.keys(DEFAULT_HEADERS).forEach((key) => {
+            if (!headers.has(key)) {
+                headers.set(key, DEFAULT_HEADERS[key]);
+            }
+        })
 
         return new Request(url, {
             ...options,
-            headers: options.headers ?? defaultHeaders,
+            headers: headers,
         })
     }
 
