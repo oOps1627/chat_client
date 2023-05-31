@@ -18,7 +18,7 @@ export class RefreshTokenInterceptor implements IHttpInterceptor {
                 }))
                 .catch((error: IHttpErrorResponse) => {
                     if (error.error.statusCode === 401) {
-                        restApi.post(`${process.env.REACT_APP_API_HOST}/auth/refresh`)
+                       this._refreshTokenRequest()
                             .then(() => {
                                 const newRequest: Request = request.clone();
                                 newRequest.headers.append(SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER, 'true');
@@ -29,6 +29,12 @@ export class RefreshTokenInterceptor implements IHttpInterceptor {
                         reject(error);
                     }
                 });
+        })
+    }
+
+    private _refreshTokenRequest(): Promise<void> {
+        return restApi.post(`${process.env.REACT_APP_API_HOST}/auth/refresh`,{
+            headers: {[SKIP_REFRESH_TOKEN_INTERCEPTOR_HEADER]: 'true'}
         })
     }
 }
