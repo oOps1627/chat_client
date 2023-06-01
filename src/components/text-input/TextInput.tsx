@@ -19,6 +19,7 @@ export function TextInput(): ReactElement {
         <>
             <form className="input-form" onSubmit={(event) => handleSubmit(event)}>
                 <input type="text"
+                       placeholder="Write a message"
                        value={text}
                        onChange={(event: ChangeEvent<HTMLInputElement>) => setText(event.target.value)}
                 />

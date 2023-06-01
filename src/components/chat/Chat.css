@@ -13,6 +13,7 @@
 }
 
 .Chat__container {
+    padding: 10px 15px;
     flex-grow: 1;
     background-color: #ebebeb;
     box-shadow: 1px 1px 8px black;
@@ -21,3 +22,11 @@
     overflow-wrap: break-word;
 }
 
+.Chat__message {
+    background: white;
+    border-radius: 10px;
+    padding: 5px 10px;
+    width: auto;
+    display: inline-block;
+    margin-bottom: 10px;
+}

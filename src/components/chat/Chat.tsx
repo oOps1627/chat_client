@@ -39,8 +39,8 @@ function Chat(): ReactElement {
             <div className="Chat__container">
                 {
                     messages.map(message => <div className='Chat__message'>
-                        <i className='date'> ({new Date(message.date).toUTCString()}) </i>
                         <b className='author'> {message.authorUsername} </b>
+                        <i className='date'> ({new Date(message.date).toUTCString()}) </i>
                         <div className='text'>
                             {message.text}
                         </div>
